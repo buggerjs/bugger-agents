@@ -1,0 +1,19 @@
+{
+  "name": "bugger-agents",
+  "version": "0.0.0",
+  "description": "Devtools protocol agents for node",
+  "main": "lib/bugger-agents.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/buggerjs/bugger-agents.git"
+  },
+  "author": "Jan Krems <jan.krems@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buggerjs/bugger-agents/issues"
+  },
+  "homepage": "https://github.com/buggerjs/bugger-agents"
+}
