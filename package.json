@@ -4,7 +4,7 @@
   "description": "Devtools protocol agents for node",
   "main": "lib/bugger-agents.js",
   "scripts": {
-    "test": "make test"
+    "test": "mocha && jshint lib test"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/buggerjs/bugger-agents/issues"
   },
-  "homepage": "https://github.com/buggerjs/bugger-agents"
+  "homepage": "https://github.com/buggerjs/bugger-agents",
+  "devDependencies": {
+    "assertive": "^1.4.0",
+    "jshint": "^2.5.6",
+    "mocha": "^1.21.4"
+  },
+  "dependencies": {
+    "bluebird": "^2.3.2",
+    "bugger-v8-client": "^0.1.0",
+    "lodash": "^2.4.1"
+  }
 }
