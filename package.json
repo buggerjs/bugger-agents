@@ -1,6 +1,7 @@
 {
   "name": "bugger-agents",
   "version": "0.0.0",
+  "protocolVersion": "1.1",
   "description": "Devtools protocol agents for node",
   "main": "lib/bugger-agents.js",
   "scripts": {

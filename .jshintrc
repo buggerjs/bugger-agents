@@ -13,7 +13,6 @@
 
   "camelcase": true,
   "quotmark": "single",
-  "maxlen": 80,
   "indent": 2,
   "trailing": true,
   "nonbsp": true,
