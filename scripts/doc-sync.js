@@ -108,7 +108,7 @@ protocol.domains.forEach(function(domain) {
   var implFilename = getAgentFilename(name);
 
   if (!fs.existsSync(implFilename)) {
-    console.error('[warn] Not found: %j', name);
+    console.error('[warn] Not found: %j - %s', name, implFilename);
     return;
   }
 
@@ -152,17 +152,29 @@ protocol.domains.forEach(function(domain) {
     '// This file is auto-generated using scripts/doc-sync.js' +
     '\n\n';
 
-  typesSource += domain.types.map(function(typeSpec) {
+  typesSource += (domain.types || []).map(function(typeSpec) {
     var prefix = formatCommand(typeSpec) + 'exports.' + typeSpec.id + ' =';
     switch (typeSpec.type) {
       case 'object':
+        var argList = typeSpec.properties && typeSpec.properties.length ?
+          '(props) {\n  ' : '() {\n  ';
         return prefix + '\nfunction ' + typeSpec.id +
-          '(props) {\n  ' + typeSpec.properties.map(function(prop) {
+          argList + (typeSpec.properties || []).map(function(prop) {
             return 'this.' + prop.name + ' = props.' + prop.name + ';';
           }).join('\n  ') + '\n};\n';
 
+      case 'array':
+        return prefix + ' function(arr) { return arr; };\n'
+
       case 'string':
         return prefix + ' String;\n';
+
+      case 'integer':
+      case 'number':
+        return prefix + ' Number;\n';
+
+      case 'boolean':
+        return prefix + ' Boolean;\n';
 
       default:
         throw new Error('Unknown type: ' + typeSpec.type);
