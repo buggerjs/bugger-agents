@@ -6,9 +6,8 @@ var fs = require('fs');
 
 var _ = require('lodash');
 
-var protocolVersion = require('../package.json').protocolVersion;
 var protocol = require(
-  '../../blink/Source/devtools/Inspector-' + protocolVersion);
+  '../../blink/Source/devtools/protocol.json');
 
 function toSpinalCase(str) {
   return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -89,21 +88,22 @@ function showChange(old, replacement) {
 }
 
 function templateMethod(agentClass, cmd) {
-  return ('{agentClass}.prototype.{cmd} = function() {\n' +
+  return ('{agentClass}.prototype.{cmd} =\n' +
+          'function {cmd}() {\n' +
           '  return this._withClient(function() {\n' +
           '    throw new Error(\'Not implemented\');\n' +
           '  });\n' +
           '};\n')
-            .replace('{agentClass}', agentClass)
-            .replace('{cmd}', cmd);
+            .replace(/\{agentClass\}/g, agentClass)
+            .replace(/\{cmd\}/g, cmd);
 }
 
 protocol.domains.forEach(function(domain) {
   var name = domain.domain;
   var agentClass = name + 'Agent';
-  var methodPattern = new RegExp(
-    '(/\\*\\*\n(?: \\*[^\n]*\n)* \\*/\n)?' +
-    agentClass + '\\.prototype\\.([\\w]+) =', 'g');
+  var methodPatternStr = '(/\\*\\*\n(?: \\*[^\n]*\n)* \\*/\n)?' +
+    agentClass + '\\.prototype\\.([\\w]+) =[\\s]*function[^(]*\\(';
+  var methodPattern = new RegExp(methodPatternStr, 'g');
 
   var implFilename = getAgentFilename(name);
 
@@ -119,13 +119,20 @@ protocol.domains.forEach(function(domain) {
       methodsFound.push(cmd);
 
       var cmdDesc = _.find(domain.commands, { name: cmd });
+      if (!cmdDesc) {
+        console.error(
+          '[warn] Command seems to have been removed: %s.%s',
+          name, cmd);
+        return text;
+      }
       var properComment = formatCommand(cmdDesc);
       if (oldComment !== undefined && oldComment !== properComment) {
         console.error(
           '[info] Replacing comment for %s:\n%s', name + '.' + cmd,
           showChange(oldComment, properComment));
       }
-      var postfix = agentClass + '.prototype.' + cmd + ' =';
+      var postfix = agentClass + '.prototype.' + cmd + ' =\n' +
+          'function ' + cmd + '(';
       return properComment + postfix;
     });
 
