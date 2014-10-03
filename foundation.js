@@ -1,5 +1,5 @@
-if (!global.__bugger) {
-  global.__bugger = {
+if (!global.__bugger__) {
+  global.__bugger__ = {
     require: require('native_module').require,
     versions: {
       'bugger-agents': require('./package.json').version

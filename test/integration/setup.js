@@ -1,6 +1,5 @@
 'use strict';
 
-var Bluebird = require('bluebird');
 var assert = require('assertive');
 
 var withBugger = require('../helpers/with-bugger');
@@ -10,16 +9,16 @@ describe('integration/setup', function() {
   describe('ok.js', function() {
     withBugger('ok');
 
-    it('connects & can read "ok"', function() {
+    it('connects & can read "ok"', function*() {
       var child = this.child;
-      var agents = this.agents;
+      var Debugger = this.agents.Debugger;
 
-      return Bluebird.all([
-        child.captureOutput(),
-        agents.Debugger.enable().resume()
-      ]).spread(function(text) {
-        assert.equal('ok\n', text);
-      });
+      var text = child.captureOutput();
+
+      yield Debugger.enable();
+      yield Debugger.resume();
+
+      assert.equal('ok\n', yield text);
     });
   });
 });
