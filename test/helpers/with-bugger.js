@@ -4,11 +4,10 @@ var Bluebird = require('bluebird');
 
 var lastDebugPort = 5858;
 
-module.exports = function withBugger(name, args, debugBreak) {
+module.exports = function withBugger(name, args) {
   if (!Array.isArray(args)) { args = []; }
-  if (typeof debugBreak === 'undefined') debugBreak = true;
 
-  var debugPrefix = debugBreak ? '--debug-brk=' : '--debug=';
+  var debugPrefix = '--debug-brk=';
 
   var execFile = require('child_process').execFile;
   var path = require('path');
@@ -48,23 +47,20 @@ module.exports = function withBugger(name, args, debugBreak) {
       });
     };
 
-    if (process.env.BUGGER_PIPE_CHILD) {
-      this.child.stdout.pipe(process.stdout);
-    }
-    this.agents = attachToPort(this.debugPort);
-    this.debugClient = this.agents._client;
-
-    if (debugBreak) {
-      this.debugClient.nextEvent('paused').nodeify(done);
-    } else {
-      done();
-    }
+    this.child.stdout.pipe(process.stdout);
+    this.child.stderr.pipe(process.stderr);
+    attachToPort(this.debugPort)
+      .then(function(agents) {
+        this.agents = agents;
+        this.debugClient = agents.getClient();
+      }.bind(this))
+      .nodeify(done);
   });
 
   afterEach(function(done) {
-    if (this.debugClient.connected) {
+    if (this.debugClient && this.debugClient.connected) {
       this.debugClient.on('close', function() { done(); });
-    } else if (!this.child.connected) {
+    } else if (!this.child || !this.child.connected) {
       return done();
     } else {
       this.child.on('exit', function() { done(); });
