@@ -25,6 +25,7 @@
   "dependencies": {
     "bluebird": "^2.3.2",
     "bugger-v8-client": "^1.0.0",
+    "debug": "^2.0.0",
     "lodash": "^2.4.1"
   }
 }
