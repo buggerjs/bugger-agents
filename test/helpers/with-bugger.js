@@ -47,8 +47,10 @@ module.exports = function withBugger(name, args) {
       });
     };
 
-    this.child.stdout.pipe(process.stdout);
-    this.child.stderr.pipe(process.stderr);
+    if (process.env.BUGGER_PIPE_CHILD) {
+      this.child.stdout.pipe(process.stdout);
+      this.child.stderr.pipe(process.stderr);
+    }
     attachToPort(this.debugPort)
       .then(function(agents) {
         this.agents = agents;
