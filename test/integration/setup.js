@@ -1,24 +1,14 @@
-'use strict';
+import test from 'blue-tape';
 
-var assert = require('assertive');
-
-var withBugger = require('../helpers/with-bugger');
+import buggerTest from '../helpers/bugger-test';
 
 /* global describe, it */
-describe('integration/setup', function() {
-  describe('ok.js', function() {
-    withBugger('ok');
+test('integration/setup', t => {
+  buggerTest(t, 'ok.js', async (t, {Debugger}, child) => {
+    await Debugger.enable();
+    await Debugger.resume();
 
-    it('connects & can read "ok"', function*() {
-      var child = this.child;
-      var Debugger = this.agents.Debugger;
-
-      var text = child.captureOutput();
-
-      yield Debugger.enable();
-      yield Debugger.resume();
-
-      assert.equal('ok\n', yield text);
-    });
+    t.equal(await child.capturedOutput, 'ok\n',
+      'The script ran to completion, printing "ok"');
   });
 });
