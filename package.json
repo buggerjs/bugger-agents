@@ -27,6 +27,7 @@
     "bugger-v8-client": "^2.0.1",
     "debug": "^2.2.0",
     "lodash": "^3.10.1",
-    "rimraf": "^2.4.2"
+    "rimraf": "^2.4.2",
+    "websocket": "^1.0.21"
   }
 }

@@ -2,53 +2,15 @@
 'use strict';
 
 var vm = require('vm');
-var execFile = require('child_process').execFile;
 var Repl = require('repl');
 
 var _ = require('lodash');
 
 var bundledAgents = require('../lib/agents');
-var buggerV8Client = require('../');
-var attachToPort = buggerV8Client.attachToPort;
 
-function withAgents(filename, args, debugBreak) {
-  if (!Array.isArray(args)) { args = []; }
-  if (typeof debugBreak === 'undefined') debugBreak = true;
+var withAgents = require('./_with-agents');
 
-  var debugPrefix = debugBreak ? '--debug-brk=' : '--debug=';
-
-  var debugPort = 5858;
-
-  var withNodeArgs = [
-    debugPrefix + debugPort,
-    filename
-  ].concat(args);
-
-  var child = execFile(process.argv[0], withNodeArgs, {
-    cwd: process.cwd(), env: process.env
-  });
-
-  child.on('exit', function(exitCode) {
-    console.log('Child died:', exitCode);
-    process.exit(exitCode);
-  });
-
-  if (process.env.BUGGER_PIPE_STDOUT) {
-    child.stdout.pipe(process.stdout);
-  }
-
-  process.on('exit', function() {
-    try { child.kill(); } catch (e) {}
-  });
-
-  return attachToPort(debugPort);
-}
-
-withAgents(
-  process.argv[2],
-  process.argv.slice(3),
-  !process.env.BUGGER_NO_BREAK
-).then(function(agents) {
+withAgents.then(function(agents) {
   function fancyPromiseEval(code, context, file, cb) {
     var err, result, script;
     // first, create the Script object to check the syntax
@@ -89,8 +51,4 @@ withAgents(
       }
     })
   });
-  // _.each(DebugClient.prototype, function(fn, cmdName) {
-  //   if (typeof fn === 'function')
-  //     repl.context[cmdName] = fn.bind(bugger);
-  // });
 });
