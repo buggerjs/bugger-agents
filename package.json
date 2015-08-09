@@ -20,7 +20,8 @@
   "homepage": "https://github.com/buggerjs/bugger-agents",
   "devDependencies": {
     "babel": "^5.8.21",
-    "blue-tape": "^0.1.10"
+    "blue-tape": "^0.1.10",
+    "jshint": "^2.8.0"
   },
   "dependencies": {
     "bluebird": "^2.9.34",
