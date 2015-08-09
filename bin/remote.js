@@ -11,6 +11,7 @@ withAgents.then(function(agents) {
 
   var webSocket = new WebSocketServer({
     httpServer: httpServer,
+    maxReceivedFrameSize: 0x100000, // 1MB
     autoAcceptConnections: true
   });
 

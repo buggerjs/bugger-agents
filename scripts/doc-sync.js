@@ -90,9 +90,7 @@ function showChange(old, replacement) {
 function templateMethod(agentClass, cmd) {
   return ('{agentClass}.prototype.{cmd} =\n' +
           'function {cmd}() {\n' +
-          '  return this._withClient(function() {\n' +
-          '    throw new Error(\'Not implemented\');\n' +
-          '  });\n' +
+          '  throw new Error(\'Not implemented\');\n' +
           '};\n')
             .replace(/\{agentClass\}/g, agentClass)
             .replace(/\{cmd\}/g, cmd);
