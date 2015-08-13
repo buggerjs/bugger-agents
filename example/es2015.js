@@ -1,5 +1,7 @@
 'use strict';
 
+const http = require('http');
+
 let x = 10;
 
 class Thing {
@@ -16,6 +18,12 @@ class Thing {
 let thing = new Thing(7);
 console.log(thing);
 
+function makeRequest() {
+  const req = http.get('http://api.reddit.com', function(res) {
+    console.log('statusCode:', res.statusCode);
+  });
+}
+
 setInterval(function() {
-  console.log(thing.attr);
+  makeRequest();
 }, 5000);
