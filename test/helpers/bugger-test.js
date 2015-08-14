@@ -103,6 +103,6 @@ export default function buggerTest(parentTest, name, args, debugBreak, f) {
 
     return Bluebird.resolve(launchAndConnect(ctx, name, args, debugBreak))
       .then(() => f(t, ctx.agents, ctx.child, ctx.debugPort))
-      .finally(() => killAndDisconnect(ctx.child, ctx.bugger));
+      .finally(() => killAndDisconnect(ctx.child, ctx.debugClient));
   });
 }

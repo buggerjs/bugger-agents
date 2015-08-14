@@ -1,2 +1,0 @@
---require ./test/coroutine-support.js
---recursive
