@@ -29,8 +29,9 @@ function withAgents(filename, args, debugBreak) {
     process.exit(exitCode);
   });
 
-  if (process.env.BUGGER_PIPE_STDOUT) {
+  if (process.env.BUGGER_PIPE_CHILD) {
     child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
   }
 
   process.on('exit', function() {
