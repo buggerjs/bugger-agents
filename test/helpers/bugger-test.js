@@ -65,7 +65,7 @@ async function launchAndConnect(ctx, name, args, debugBreak) {
 
   const child = await launch();
   await Bluebird.delay(250);
-  const agents = ctx.agents = await attachToPort(debugPort);
+  const agents = ctx.agents = await attachToPort(debugPort, child);
   ctx.debugClient = agents.getClient();
 }
 
