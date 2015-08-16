@@ -15,7 +15,7 @@ function toSpinalCase(str) {
 
 var agentsDirectory = path.join(__dirname, '..', 'lib', 'agents');
 function getAgentFilename(domainName) {
-  return path.join(agentsDirectory, toSpinalCase(domainName) + '.js');
+  return path.join(agentsDirectory, toSpinalCase(domainName) + '/index.js');
 }
 
 function commentLines(str) {
@@ -152,7 +152,7 @@ protocol.domains.forEach(function(domain) {
   fs.writeFileSync(implFilename, fixed, 'utf8');
 
   // Generate types file
-  var typesFilename = implFilename.replace(/\.js$/, '.types.js');
+  var typesFilename = implFilename.replace(/index\.js$/, 'types.js');
   var typesSource = '\'use strict\';\n' +
     '// This file is auto-generated using scripts/doc-sync.js' +
     '\n\n';
