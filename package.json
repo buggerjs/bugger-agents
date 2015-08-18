@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "bluebird": "^2.9.34",
-    "bugger-v8-client": "^3.1.0",
+    "bugger-v8-client": "^3.2.0",
     "debug": "^2.2.0",
     "lodash": "^3.10.1",
     "rimraf": "^2.4.2",
