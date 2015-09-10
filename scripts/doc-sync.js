@@ -9,13 +9,9 @@ var _ = require('lodash');
 var protocol = require(
   '../../blink/Source/devtools/protocol.json');
 
-function toSpinalCase(str) {
-  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-}
-
 var agentsDirectory = path.join(__dirname, '..', 'lib', 'agents');
 function getAgentFilename(domainName) {
-  return path.join(agentsDirectory, toSpinalCase(domainName) + '/index.js');
+  return path.join(agentsDirectory, _.kebabCase(domainName) + '/index.js');
 }
 
 function commentLines(str) {
