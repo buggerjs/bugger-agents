@@ -1,7 +1,7 @@
 setInterval(function() {}, 1000 * 60 * 60 * 24);
 
 function doStuff() {
-  var x = 20;
+  var x = 10;
   if (x < process.fauxProperty) {
     console.log('Weird stuff going on.', __dirname);
   }
