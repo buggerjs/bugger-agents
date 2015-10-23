@@ -18,6 +18,9 @@
     "url": "https://github.com/buggerjs/bugger-agents/issues"
   },
   "homepage": "https://github.com/buggerjs/bugger-agents",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "devDependencies": {
     "babel": "^5.8.21",
     "blue-tape": "^0.1.10",
