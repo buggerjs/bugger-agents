@@ -25,8 +25,7 @@
     "babel": "^5.8.21",
     "blue-tape": "^0.1.10",
     "jshint": "^2.8.0",
-    "request": "^2.60.0",
-    "v8-profiler": "^5.2.9"
+    "request": "^2.60.0"
   },
   "dependencies": {
     "bluebird": "^2.9.34",
@@ -34,6 +33,7 @@
     "debug": "^2.2.0",
     "lodash": "^3.10.1",
     "rimraf": "^2.4.2",
+    "v8-profiler": "^5.2.9",
     "websocket": "^1.0.21",
     "ws": "^0.8.0"
   }
